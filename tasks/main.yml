@@ -17,6 +17,8 @@
       shell: java -version 2>&1 | grep version
       register: java_version
 
+    - debug: var=java_version
+
   when: ansible_os_family != 'Windows'
 
 #############################################################################
