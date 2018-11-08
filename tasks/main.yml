@@ -1,6 +1,38 @@
 ---
 # tasks file for java_finder
-- name: Java version
-  shell: java -version 2>&1 | grep version
-  register: java_version 
-- debug: var=java_version
+
+- name: Include checks/asserts
+  import_tasks: asserts.yml
+
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+  tags: always
+
+#############################################################################
+# Tasks for all *NIX operating systems
+#############################################################################
+- block:
+
+    - name: Check for Java Version if in PATH
+      shell: java -version 2>&1 | grep version
+      register: java_version
+
+  when: ansible_os_family != 'Windows'
+
+#############################################################################
+# End of tasks for all *NIX operating systems
+#############################################################################
+
+#############################################################################
+# Tasks for Windows
+#############################################################################
+
+#- block:
+
+
+
+
+
+
+#  when: ansible_os_family == 'Windows'
+  

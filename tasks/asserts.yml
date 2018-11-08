@@ -1,0 +1,37 @@
+---
+# File: checks.yml - Asserts for this playbook
+
+- name: Check distribution compatibility
+  fail:
+    msg: "{{ ansible_distribution }} is not currently supported by this role."
+  when:
+    - ansible_distribution not in ['RedHat', 'CentOS', 'OracleLinux', 'Debian', 'FreeBSD', 'SmartOS', 'Ubuntu', 'Archlinux', 'Alpine', 'Amazon']
+    - ansible_os_family != 'Windows'
+
+- name: Check CentOS, Red Hat or Oracle Linux version
+  fail:
+    msg: "{{ ansible_distribution_version }} is not a supported version."
+  when:
+    - ansible_distribution in ['RedHat', 'CentOS', 'OracleLinux']
+    - ansible_distribution_version is version_compare(6, '<')
+
+- name: Check Debian version
+  fail:
+    msg: "{{ ansible_distribution_version }} is not a supported version."
+  when:
+    - ansible_distribution == "Debian"
+    - ansible_distribution_version is version_compare(8, '<')
+
+- name: Check FreeBSD version
+  fail:
+    msg: "{{ ansible_distribution_version }} is not a supported version."
+  when:
+    - ansible_distribution == "FreeBSD"
+    - ansible_distribution_version is version_compare(10, '<')
+
+- name: Check Ubuntu version
+  fail:
+    msg: "{{ ansible_distribution_version }} is not a supported version."
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_version is version_compare(13.04, '<')
