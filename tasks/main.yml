@@ -1,0 +1,6 @@
+---
+# tasks file for java_finder
+- name: Java version
+  shell: java -version 2>&1 | grep version
+  register: java_version 
+- debug: var=java_version
