@@ -16,6 +16,7 @@
     - name: Check for Java Version if in PATH
       shell: java -version 2>&1 | grep version
       register: java_version
+      ignore_errors: yes
 
     - debug: var=java_version
 
