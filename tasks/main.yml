@@ -18,7 +18,14 @@
       register: java_version
       ignore_errors: yes
 
+    - name: Check for Java processes
+      shell: ps -ef | grep java
+      register: java_process
+      ignore_errors: yes
+
     - debug: var=java_version
+
+    - debug: var=java_process
 
   when: ansible_os_family != 'Windows'
 
