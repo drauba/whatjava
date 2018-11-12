@@ -19,7 +19,7 @@
       ignore_errors: yes
 
     - name: Check for Java processes
-      shell: ps -ef | grep -m 2 java | grep -v grep
+      shell: readlink -f /proc/*/exe | grep java | grep -v grep
       register: java_process
       ignore_errors: yes
 
