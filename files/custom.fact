@@ -1,0 +1,26 @@
+#!/bin/bash
+
+JAVAP=$(readlink -f /proc/*/exe | grep java | grep -v grep | sed s/\ /\,/g)
+JAVAP=$(echo $JAVAP | sed s/\ /\,/g)
+set -f
+java_directory=(${JAVAP//,/ })
+java_version=()
+for i in "${!java_directory[@]}"
+do
+  java_version[i]=\"$(${java_directory[i]} -version 2>&1 | grep version | sed 's/\"//g')\"
+done
+
+for i in "${!java_directory[@]}"
+do
+  java_directory[i]=\"${java_directory[i]}\"
+done
+
+
+IFS=,
+cat <<EOF
+{
+  "java_directory" : [${java_directory[*]}],
+  "java_version" : [${java_version[*]}]
+}
+EOF
+
