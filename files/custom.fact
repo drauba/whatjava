@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JAVAP=$(readlink -f /proc/*/exe | grep java | grep -v grep | sed s/\ /\,/g)
+JAVAP=$(readlink -f /proc/*/exe | grep java | grep -v grep)
 JAVAP=$(echo $JAVAP | sed s/\ /\,/g)
 set -f
 java_directory=(${JAVAP//,/ })
