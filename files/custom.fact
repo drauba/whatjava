@@ -1,7 +1,11 @@
 #!/bin/bash
 
+
+proc_model=$(lscpu | sed -nr '/Model name/ s/.*:\s*(.*) @ .*/\1/p')
+cores=$(nproc --all)
 JAVAP=$(readlink -f /proc/*/exe | grep java | grep -v grep)
 JAVAP=$(echo $JAVAP | sed s/\ /\,/g)
+
 set -f
 java_directory=(${JAVAP//,/ })
 java_version=()
@@ -20,7 +24,9 @@ IFS=,
 cat <<EOF
 {
   "java_directory" : [${java_directory[*]}],
-  "java_version" : [${java_version[*]}]
+  "java_version" : [${java_version[*]}],
+  "processor_model" : "${proc_model}",
+  "cores" : "${cores}"
 }
 EOF
 
