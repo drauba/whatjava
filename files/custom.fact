@@ -3,6 +3,7 @@
 
 proc_model=$(lscpu | sed -nr '/Model name/ s/.*:\s*(.*) @ .*/\1/p')
 cores=$(nproc --all)
+virtualization=$(hostnamectl | sed -n 's/[ \t]*Virtualization: //p')
 JAVAP=$(readlink -f /proc/*/exe | grep java | grep -v grep)
 JAVAP=$(echo $JAVAP | sed s/\ /\,/g)
 
@@ -26,7 +27,8 @@ cat <<EOF
   "java_directory" : [${java_directory[*]}],
   "java_version" : [${java_version[*]}],
   "processor_model" : "${proc_model}",
-  "cores" : "${cores}"
+  "cores" : "${cores}",
+  "virtualization" : "${virtualization}"
 }
 EOF
 
