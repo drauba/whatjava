@@ -13,19 +13,26 @@
 #############################################################################
 - block:
 
-    - name: "Create custom fact directory"
-      file:
-        path: "/etc/ansible/facts.d"
-        state: "directory"
+    - name: "Set JAVAP"
+      shell: java -version
+      register: JAVAP
 
-    - name: "Insert custom fact file"
-      copy:
-        src: files/custom.fact
-        dest: /etc/ansible/facts.d/custom.fact
-        mode: 0755
+    - name: "debug"
+      debug: msg={{JAVAP.stderr_lines}}
 
-    - name: "Re-run setup to use custom facts"
-      setup: filter=ansible_local
+#    - name: "Create custom fact directory"
+#      file:
+#        path: "/etc/ansible/facts.d"
+#        state: "directory"
+
+#    - name: "Insert custom fact file"
+#      copy:
+#        src: files/custom.fact
+#        dest: /etc/ansible/facts.d/custom.fact
+#        mode: 0755
+
+#    - name: "Re-run setup to use custom facts"
+#      setup: filter=ansible_local
 
   when: ansible_os_family != 'Windows'
 
@@ -37,12 +44,14 @@
 # Tasks for Windows
 #############################################################################
 
-#- block:
+- block:
+    
+    - name: Test the PsExec connection to the local system (target node) with your user
+      win_shell: Get-WmiObject -Class Win32_Product -ComputerName {{ ansible_hostname }} -Filter "Name like 'Java%'" | Select Name, Version
+      register: winshell
 
+    - name: "debug windows"
+      debug: msg={{winshell.stdout_lines}}
 
-
-
-
-
-#  when: ansible_os_family == 'Windows'
+  when: ansible_os_family == 'Windows'
   
