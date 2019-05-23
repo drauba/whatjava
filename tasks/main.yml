@@ -37,9 +37,10 @@
     - name: "Check process stack with script"
       script: /etc/ansible/whatjava.sh
       ignore_errors: yes
+      become: yes
       register: scriptresult
 
-    - name: "yum debug"
+    - name: "script debug"
       debug: msg={{scriptresult}}      
 
 #    - name: "Create custom fact directory"
