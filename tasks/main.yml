@@ -26,7 +26,7 @@
       ignore_errors: yes
       when: 
         - ansible_distribution in ['RedHat', 'CentOS', 'OracleLinux']
-        - '"command not found" not in JAVAP.stderr'
+        - '"*command not found*" not in JAVAP.stderr'
 
 #    - name: "Create custom fact directory"
 #      file:
