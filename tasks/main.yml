@@ -35,13 +35,13 @@
       debug: msg={{yumresult}}
 
     - name: "Check process stack with script"
-      script: /etc/ansible/whatjava.sh
+      shell: readlink -e /proc/*/exe | grep java | grep -v grep
       ignore_errors: yes
       become: yes
-      register: scriptresult
+      register: psresult
 
-    - name: "script debug"
-      debug: msg={{scriptresult}}      
+    - name: "ps debug"
+      debug: msg={{psresult}}      
 
 #    - name: "Create custom fact directory"
 #      file:
