@@ -41,7 +41,7 @@
       register: psresult
 
     - name: "Check Version from previous step"
-      shell: {{psresult.stdout}} -version
+      shell: "{{psresult.stdout}}" -version
       ignore_errors: yes
       become: yes
       register: versionresult      
