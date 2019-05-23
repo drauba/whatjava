@@ -37,7 +37,7 @@
 
     - name: "version debug"
       debug: msg={{versionresult}}
-      when: versionresult.stderr.find('command not found') == -1  
+      when: versionresult is defined
 
   when: ansible_os_family != 'Windows'
 
