@@ -24,6 +24,7 @@
     - name: "Check Yum installed"
       yum: 
         list: java*
+        state: present
       ignore_errors: yes
       register: yumresult
       when: 
