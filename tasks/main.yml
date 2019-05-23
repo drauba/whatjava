@@ -25,9 +25,13 @@
       yum: 
         list: java*
       ignore_errors: yes
+      register: yumresult
       when: 
         - ansible_distribution in ['RedHat', 'CentOS', 'OracleLinux']
 #        - JAVAP.stderr.find('command not found') != -1
+
+    - name: "yum debug"
+      debug: msg={{yumresult}}
 
 #    - name: "Create custom fact directory"
 #      file:
