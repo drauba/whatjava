@@ -33,11 +33,11 @@
       ignore_errors: yes
       become: yes
       register: versionresult   
-      when: psresult is defined
+      when: psresult.stdout != ""
 
     - name: "version debug"
       debug: msg={{versionresult}}
-      when: versionresult is defined  
+      when: versionresult.stderr.find('command not found') == -1  
 
   when: ansible_os_family != 'Windows'
 
