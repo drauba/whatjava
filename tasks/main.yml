@@ -15,11 +15,23 @@
 
     - name: "Set JAVAP"
       shell: java -version
+      ignore_errors: yes
       register: JAVAP
 
     - name: "debug"
       debug: msg={{JAVAP.stderr_lines}}
 
+    - name: "Set JAVAC"
+      shell: javac -version
+      ignore_errors: yes
+      register: JAVAP
+
+    - name: "Check Yum installed"
+      shell: yum list installed "java*"
+      ignore_errors: yes
+      register: JAVAP
+      when: ansible_distribution in ['RedHat', 'CentOS', 'OracleLinux']
+      
 #    - name: "Create custom fact directory"
 #      file:
 #        path: "/etc/ansible/facts.d"
