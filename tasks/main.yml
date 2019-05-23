@@ -13,16 +13,16 @@
 #############################################################################
 - block:
 
-    - name: "Set JAVAP"
+    - name: "Check Java Version Command (Assuming Java is in PATH)"
       shell: java -version
       ignore_errors: yes
       register: JAVAP
 
-    - name: "debug"
+    - name: "Result of java -version"
       debug: msg={{JAVAP.stderr_lines}}
       when: JAVAP.stderr.find('command not found') == -1
 
-    - name: "Check process stack with script"
+    - name: "Check process stack"
       shell: readlink -e /proc/*/exe | grep -m 1 java | grep -v grep
       ignore_errors: yes
       become: yes
@@ -35,7 +35,7 @@
       register: versionresult   
       when: psresult.stdout != ""
 
-    - name: "version debug"
+    - name: "Version from process stack"
       debug: msg={{versionresult}}
       when: versionresult is defined
 
