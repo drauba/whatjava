@@ -20,51 +20,24 @@
 
     - name: "debug"
       debug: msg={{JAVAP.stderr_lines}}
-
-    - name: "Check Yum installed"
-      yum: 
-        list: java*
-        state: present
-      ignore_errors: yes
-      register: yumresult
-      when: 
-        - ansible_distribution in ['RedHat', 'CentOS', 'OracleLinux']
-#        - JAVAP.stderr.find('command not found') != -1
-
-    - name: "yum debug"
-      debug: msg={{yumresult}}
+      when: JAVAP.stderr_lines != ""
 
     - name: "Check process stack with script"
-      shell: readlink -e /proc/*/exe | grep java | grep -v grep
+      shell: readlink -e /proc/*/exe | grep -m 1 java | grep -v grep
       ignore_errors: yes
       become: yes
       register: psresult
-  
-    - name: "ps debug"
-      debug: msg={{psresult.stdout}}   
+      when: JAVAP.stderr_lines == ""
 
     - name: "Check Version from previous step"
       shell: "{{psresult.stdout}} -version"
       ignore_errors: yes
       become: yes
-      register: versionresult      
+      register: versionresult    
+      when: psresult.stdout != ""  
 
     - name: "version debug"
       debug: msg={{versionresult}}      
-
-#    - name: "Create custom fact directory"
-#      file:
-#        path: "/etc/ansible/facts.d"
-#        state: "directory"
-
-#    - name: "Insert custom fact file"
-#      copy:
-#        src: files/custom.fact
-#        dest: /etc/ansible/facts.d/custom.fact
-#        mode: 0755
-
-#    - name: "Re-run setup to use custom facts"
-#      setup: filter=ansible_local
 
   when: ansible_os_family != 'Windows'
 
