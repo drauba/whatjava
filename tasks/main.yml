@@ -20,24 +20,24 @@
 
     - name: "debug"
       debug: msg={{JAVAP.stderr_lines}}
-      when: JAVAP.stderr_lines != ""
+      when: JAVAP.stderr.find('command not found') == -1
 
     - name: "Check process stack with script"
       shell: readlink -e /proc/*/exe | grep -m 1 java | grep -v grep
       ignore_errors: yes
       become: yes
       register: psresult
-      when: JAVAP.stderr_lines == ""
 
     - name: "Check Version from previous step"
       shell: "{{psresult.stdout}} -version"
       ignore_errors: yes
       become: yes
-      register: versionresult    
-      when: psresult.stdout != ""  
+      register: versionresult   
+      when: psresult is defined
 
     - name: "version debug"
-      debug: msg={{versionresult}}      
+      debug: msg={{versionresult}}
+      when: versionresult is defined  
 
   when: ansible_os_family != 'Windows'
 
