@@ -39,6 +39,9 @@
       ignore_errors: yes
       become: yes
       register: psresult
+  
+    - name: "ps debug"
+      debug: msg={{psresult.stdout}}   
 
     - name: "Check Version from previous step"
       shell: "{{psresult.stdout}} -version"
@@ -46,8 +49,8 @@
       become: yes
       register: versionresult      
 
-    - name: "ps debug"
-      debug: msg={{versionresult.stdout}}      
+    - name: "version debug"
+      debug: msg={{versionresult}}      
 
 #    - name: "Create custom fact directory"
 #      file:
